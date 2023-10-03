@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+var unused = "use me!!!" // the compile allows us to declare package level variables and not read them, another reason to why not to use package level variables
+
 func main() {
 	// we can use underscore in the middle of a literal to, for example, group by thousands:
 	num1 := 1_799
@@ -95,5 +97,11 @@ func main() {
 	f2, g2 := 22, 44
 	f2, g2, h3 := 36, 54, 69
 	fmt.Println(f2, g2, h3)
+
+	//> Const
+	// const for giving a name to a literal pg (30)
+	const idKey = "id"
+	const result1 = 10 * 5
+	const typedX int = 34
 
 }
