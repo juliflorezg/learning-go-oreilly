@@ -54,4 +54,46 @@ func main() {
 	fmt.Println(int(firstNumber) % 2)
 	fmt.Println(int(secondNumber) % 2)
 
+	// type conversion
+	var x int = 15
+	var y float64 = 2.5
+	var z float64 = float64(x) + y
+	var w int = x + int(y)
+
+	fmt.Println("z:", z)
+	fmt.Println("w:", w)
+
+	// this is used to give the variable the zero value
+	var x1 int
+	fmt.Println(x1)
+	// declaring multiple variables of the same type
+	var first, second int = 10, 20
+	fmt.Println("first", first)
+	fmt.Println("second", second)
+	//zero values of the same type
+	var zero1, zero2 int
+	fmt.Println("zero1", zero1)
+	fmt.Println("zero2", zero2)
+	//multiple variables with dif types
+	var dif1, dif2 = 69, "hellooo"
+	fmt.Println("dif1", dif1)
+	fmt.Println("dif2", dif2)
+
+	// declaring multiple variables at once
+	var (
+		x3     int
+		y3         = 20
+		z3     int = 30
+		d3, e3     = 40, "hello"
+		f, g   string
+	)
+
+	fmt.Println(x3, y3, z3, d3, e3, f, g)
+
+	// using short declaration format
+	f2 := 10
+	f2, g2 := 22, 44
+	f2, g2, h3 := 36, 54, 69
+	fmt.Println(f2, g2, h3)
+
 }
