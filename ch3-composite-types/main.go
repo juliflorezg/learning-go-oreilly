@@ -99,4 +99,54 @@ func main() {
 	fmt.Println(y3)        // []
 	fmt.Println(y3 == nil) // false
 
+	//! we should never specify a capacity that's less that the length
+
+	//? slicing
+	// we can get a slice from another slice
+	x2 := []int{1, 2, 3, 4}
+	y4 := x2[:2] // [1 2] end index is not inclusive
+	z1 := x2[1:] // [2 3 4] from index one (inclusive) to the end of the slice
+	d := x2[1:3] // [2 3] initial index inclusive, end index not inclusive
+	e := x2[:]   // [1 2 3 4] the entire slice, since no index where passed
+	fmt.Println(x2)
+	fmt.Println(y4)
+	fmt.Println(z1)
+	fmt.Println(d)
+	fmt.Println(e)
+
+	// when we slice from an existing slice, Go doesn't create a copy of those elements for the new slice, it shares memory between the original slice and the new sub-slice created, meaning that any change in one of the elements will be reflected in the parent slice or sub-slice that contains those elements:::
+
+	originalSlice := []int{1, 2, 3, 4}
+	firstSubSlice := originalSlice[:2]  // [1 2]
+	secondSubSlice := originalSlice[3:] // [4]
+
+	fmt.Println(cap(originalSlice), cap(firstSubSlice), cap(secondSubSlice)) // 4 4 1
+	fmt.Println("originalSlice", originalSlice)
+	fmt.Println("firstSubSlice", firstSubSlice)
+	fmt.Println("secondSubSlice", secondSubSlice)
+
+	firstSubSlice = append(firstSubSlice, 30)
+	fmt.Println("originalSlice after append", originalSlice) // [1 2 30 4]
+	fmt.Println("firstSubSlice after append", firstSubSlice) // [1 2 30 ]
+
+	// wtf, why the 3rd element in the original slice was modified ?
+	// bc when we slice from another slice, the sub-slice capacity is set to the original slices capacity, minus the offset of the sub-slice on the parent slice (how far from the beginning is the sub-slice)
+	// When we make the firstSubSlice slice from originalSlice, the length is set to 2, but the capacity is set to 4, the same as originalSlice. Since the capacity is 4, appending onto the end of firstSlice puts the value in the third position of originalSlice
+
+	//* a more confusing example :::
+
+	originalSlice2 := make([]int, 0, 5)
+	originalSlice2 = append(originalSlice2, 1, 2, 3, 4)
+	firstSubSlice2 := originalSlice2[:2]
+	secondSubSlice2 := originalSlice2[2:]
+	fmt.Println(cap(originalSlice2), cap(firstSubSlice2), cap(secondSubSlice2)) // 5 5 3  -> 3 bc of the originalSlice2 capacity and the offset (2 positions)
+	fmt.Println((originalSlice2), (firstSubSlice2), (secondSubSlice2))
+
+	firstSubSlice2 = append(firstSubSlice2, 30, 40, 50)
+	originalSlice2 = append(originalSlice2, 60)
+	secondSubSlice2 = append(secondSubSlice2, 70)
+	fmt.Println("originalSlice2 after append", originalSlice2)   // [1 2 30 40 70]
+	fmt.Println("firstSubSlice2 after append", firstSubSlice2)   // [1 2 30 40 70]
+	fmt.Println("secondSubSlice2 after append", secondSubSlice2) // [1 2 30 40 70]
+
 }
