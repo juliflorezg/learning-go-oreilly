@@ -149,4 +149,21 @@ func main() {
 	fmt.Println("firstSubSlice2 after append", firstSubSlice2)   // [1 2 30 40 70]
 	fmt.Println("secondSubSlice2 after append", secondSubSlice2) // [1 2 30 40 70]
 
+	//* in order to avoid this confusing situations, we must not, (NEVER EVER swear by the most holy thing) use append with a sub-slice or use a full slice expression to make sure that append doesn't cause any overwrite
+
+	// the full slice expression user a third parameter, it tells us the last position in the parent slice's capacity that's available for the sub-slice
+
+	originalSlice3 := make([]int, 0, 5)
+	originalSlice3 = append(originalSlice3, 1, 2, 3, 4)
+	firstSubSlice3 := originalSlice3[:2:2]                                      //> here we tell that parents capacity will be available up to index 2 (non inclusive) for the sub-slice
+	secondSubSlice3 := originalSlice3[2:4:4]                                    //> the same here, but it will be up to index 4
+	fmt.Println(cap(originalSlice3), cap(firstSubSlice3), cap(secondSubSlice3)) // 5 2 2  -> we've changed the sub-slices capacity to 2 with the full slice expression
+	fmt.Println((originalSlice3), (firstSubSlice3), (secondSubSlice3))
+
+	firstSubSlice3 = append(firstSubSlice3, 30, 40, 50)
+	originalSlice3 = append(originalSlice3, 60)
+	secondSubSlice3 = append(secondSubSlice3, 70)
+	fmt.Println("originalSlice3 after append", originalSlice3)   // [1 2 3 4 60]
+	fmt.Println("firstSubSlice3 after append", firstSubSlice3)   // [1 2 30 40 50]
+	fmt.Println("secondSubSlice3 after append", secondSubSlice3) // [3 4 70]
 }
