@@ -222,4 +222,66 @@ func main() {
 		fmt.Println(d) // [1 2 3 4]
 	}
 
+	//> strings and runes
+	{
+		var s string = "Hello there"
+		var b byte = s[6]   // byte for 't'
+		fmt.Println("b", b) // 116
+		var s2 string = s[4:7]
+		fmt.Println("s2::", s2) // o t
+		var s3 string = s[:5]
+		fmt.Println("s3::", s3) // Hello
+		var s4 string = s[6:]
+		fmt.Println("s4::", s4) // there
+	}
+	// code points that are multiple bytes long
+	{
+		var s string = "Hello 🌞"
+		fmt.Println(len(s)) // 10 (10 bytes long)
+		var s2 string = s[4:7]
+		fmt.Println("s2::", s2) // o �
+		var s3 string = s[:5]
+		fmt.Println("s3::", s3) // Hello
+		var s4 string = s[6:]
+		fmt.Println("s4::", s4) // 🌞
+		var b byte = s[6]
+		var b1 byte = s[7]
+		var b2 byte = s[8]
+		var b3 byte = s[9]
+		fmt.Println(b)
+		fmt.Println(b1)
+		fmt.Println(b2)
+		fmt.Println(b3)
+	}
+	// go allows type conversion between runes, strings and bytes
+	{
+		var a rune = 'x'          // 120
+		var s string = string(a)  // string from a rune
+		var b byte = 'y'          // 121
+		var s2 string = string(b) // string from a byte
+		fmt.Println("a::", a)
+		fmt.Println(s)
+		fmt.Println(b)
+		fmt.Println(s2)
+
+	}
+	// we can't convert a number to a string ie  5 -> "5"
+	{
+		var x int = 65
+		var y = string(x) //!! not "65" but "A"
+		fmt.Println(y)
+		s := fmt.Sprint(x)
+		fmt.Println(s)
+		fmt.Printf("Type of s (%v) is:: %T", s, s)
+	}
+
+	//we can convert a string in slices of runes and bytes
+	{
+		var s string = "Hello 🌞 yay"
+		var bs []byte = []byte(s) // byte slice -> [72 101 108 108 111 32 240 159 140 158 32 121 97 121]
+		var rs []rune = []rune(s) // rune slice -> [72 101 108 108 111 32 127774 32 121 97 121]
+		fmt.Println(bs)
+		fmt.Println(rs)
+	}
+
 }
