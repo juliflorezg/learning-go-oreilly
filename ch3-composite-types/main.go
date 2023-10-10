@@ -166,4 +166,60 @@ func main() {
 	fmt.Println("originalSlice3 after append", originalSlice3)   // [1 2 3 4 60]
 	fmt.Println("firstSubSlice3 after append", firstSubSlice3)   // [1 2 30 40 50]
 	fmt.Println("secondSubSlice3 after append", secondSubSlice3) // [3 4 70]
+
+	// we can convert an array to an slice and we can also slice an array, and the same sharing memory issues can be found if we're not careful
+
+	originalArray := [4]int{5, 6, 7, 8}
+	sliceFromArray1 := originalArray[:2] // [5 6]
+	sliceFromArray2 := originalArray[2:] // [7 8]
+	originalArray[0] = 100
+	fmt.Println("originalArray:", originalArray)     // [100 6 7 8]
+	fmt.Println("sliceFromArray1:", sliceFromArray1) // [100 6]
+	fmt.Println("sliceFromArray2:", sliceFromArray2) // [7 8]
+
+	// to  make an independent copy of an slice, we must use the built-in function copy
+
+	sliceToCopy := []int{1, 2, 3, 4}
+	resultSlice := make([]int, 4)
+
+	//> the following would be read as -copy in resultSlice as many items as possible from sliceToCopy-
+	numOfItemsCopied := copy(resultSlice, sliceToCopy) // the -copy- function takes two parameters, first one is the destination slice and second one is the source slice, and it returns the number of items copied.
+
+	fmt.Println("numOfItemsCopied", numOfItemsCopied) //4
+	fmt.Println("resultSlice", resultSlice)           // [1 2 3 4]
+
+	//copying just a portion of the source slice
+	resultSlice2 := make([]int, 2)
+	numOfItemsCopied2 := copy(resultSlice2, sliceToCopy)
+
+	fmt.Println("numOfItemsCopied2", numOfItemsCopied2) // 2
+	fmt.Println("resultSlice2", resultSlice2)           // [1 2]
+
+	//copying from the middle of the source slice
+	resultSlice3 := make([]int, 2)
+	copy(resultSlice3, sliceToCopy[2:]) //* we can not assign the return value of copy to a variable if we don't need it
+
+	fmt.Println("resultSlice3", resultSlice3) // [3 4]
+
+	// this is also possible (page 47 in the book)
+
+	{
+		x := []int{1, 2, 3, 4}
+		num := copy(x[:3], x[1:])
+		fmt.Println(x, num) // [2 3 4 4] 3
+	}
+	// that block right there shows us how to copy a section from a slice to another section in the same slice 🤯, here we copied the last three numbers from that slice into the first three numbers in the same slice
+
+	// we can also use copy in arrays, by slicing them:
+	{
+		fmt.Println("using copy in arrays")
+		x := []int{1, 2, 3, 4}
+		d := [4]int{5, 6, 7, 8}
+		y := make([]int, 2)
+		copy(y, d[:])
+		fmt.Println(y) // [5 6]
+		copy(d[:], x)
+		fmt.Println(d) // [1 2 3 4]
+	}
+
 }
