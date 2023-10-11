@@ -284,4 +284,107 @@ func main() {
 		fmt.Println(rs)
 	}
 
+	//> maps
+	// declare a empty map and set it to its zero value(nil)
+
+	var nilMap map[string]int
+	fmt.Println("nilMap", nilMap) // map[]
+	fmt.Println(nilMap == nil)    // true
+	// A nil map has length zero, we can read an nil map and will return its zero value for the map's value type, but if we try to write to a nil mal it will cause a panic.
+	fmt.Println(nilMap["key1"]) // 0
+	fmt.Println(nilMap["key2"]) // 0
+	// nilMap["key1"] = 3 //! panic: assignment to entry in nil map
+
+	// we can use the := syntax to declare an empty map, it will have length 0 but we can read and write from it
+
+	emptyMap := map[string]int{}
+	fmt.Println(emptyMap["one"]) // 0
+	emptyMap["one"] = 1
+	fmt.Println(emptyMap["one"]) // 1
+
+	// non empty map with := syntax
+	teams := map[string][]string{
+		"Orcas":   []string{"Fred", "Ralph", "Bijou"},
+		"Lions":   []string{"Sarah", "Peter", "Billie"},
+		"Kittens": []string{"Waldo", "Raul", "Ze"},
+	}
+
+	fmt.Println(teams)
+
+	// we can make an empty map with predefined size if we do know how many key-value pairs will it hold but not which ones
+	ages := make(map[int][]string, 10)
+	fmt.Println(ages)
+
+	// we can use comparable types as keys for maps, this means we can't use slices or maps as keys, since we can't compare them using == or !=
+
+	// this block show us how to read and write from an to a map
+
+	{
+		totalWins := map[string]int{}
+		totalWins["Orcas"] = 1
+		totalWins["Lions"] = 2
+		fmt.Println(totalWins["Orcas"])   // 1
+		fmt.Println(totalWins["Kittens"]) // 0 (zero value bc it hasn't been set and its type is int, so its zero value will be 0)
+		totalWins["Kittens"]++            // we can use the increment operator to operate this zero value and increment its value to 1
+		fmt.Println(totalWins["Kittens"]) // 1
+		totalWins["Lions"] = 3
+		fmt.Println(totalWins["Lions"]) // 3
+	}
+
+	//? the comma, ok idiom
+	// it help us know if a key exists in a map
+
+	m := map[string]int{
+		"hello": 5,
+		"world": 0,
+	}
+
+	v, ok := m["hello"]
+	fmt.Println(v, ok) // 5 true
+	v1, ok1 := m["world"]
+	fmt.Println(v1, ok1) // 0 true
+	v2, ok2 := m["bye"]
+	fmt.Println(v2, ok2) // 0 false
+
+	//* we can delete from a map using the delete built-in function
+	{
+		m := map[string]int{
+			"hello": 5,
+			"world": 10,
+		}
+		delete(m, "world")
+		fmt.Println(m)
+	}
+
+	//* we can use a map as a set, by setting the key type to the type of values we want in the set and the value type to boolean, like this::
+	{
+		// page 55
+		intSet := map[int]bool{}
+		intList := []int{5, 10, 2, 5, 8, 7, 3, 9, 1, 2, 10}
+		for _, v := range intList {
+			intSet[v] = true
+		}
+		fmt.Println(intSet)
+		fmt.Println(len(intList), len(intSet))
+		fmt.Println(intSet[5])   // true
+		fmt.Println(intSet[500]) // false (zero value for 500 key, is not in the list)
+		if intSet[100] {
+			fmt.Println("100 is in the list")
+		}
+	}
+
+	//* we can also use struct instead of boolean for the set. The advantage is that an empty struct uses zero bytes whereas a boolean uses one byte. The disadvantage is that it makes the code harder to read and we have to use the comma, ok idiom to check if the value is in the set::
+
+	{
+		intSet := map[int]struct{}{}
+		vals := []int{5, 10, 2, 5, 8, 7, 3, 9, 1, 2, 10}
+		for _, v := range vals {
+			intSet[v] = struct{}{}
+		}
+		fmt.Println(intSet[5])
+		if _, ok := intSet[5]; ok {
+			fmt.Println("5 is in the set")
+		}
+	}
+
 }
