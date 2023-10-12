@@ -387,4 +387,75 @@ func main() {
 		}
 	}
 
+	//> structs
+
+	type person struct {
+		name string
+		age  int
+		pet  string
+	}
+
+	var fred person // zero value struct (all of its fields will be set to its type zero value)
+	fmt.Println(fred)
+	bob := person{}
+	fmt.Println(bob)
+
+	//* two styles for declaring a nonempty struct
+	julia := person{
+		"Julia",
+		30,
+		"cat",
+	} // we must declare a value for every field in the struct and they will be assigned in the order they were declared in the struct
+	fmt.Println(julia)
+
+	beth := person{
+		age:  33,
+		name: "Beth",
+	} // using this style allow us to specify the fields in disorder and to not specify all of them
+	fmt.Println(beth)
+
+	// use dot notation to access a field in a struct::
+	bob.name = "Bob"
+	fmt.Println(beth.name)
+
+	// we can also use structs by declare them right on the variable we're using at the moment (anonymous structs)
+	{
+		var person struct {
+			name string
+			age  int
+			pet  string
+		}
+
+		person.name = "bob"
+		person.age = 43
+		person.pet = "cerberus"
+
+		pet := struct {
+			name string
+			kind string
+		}{
+			name: "Rex",
+			kind: "dog",
+		}
+		fmt.Println(pet.name)
+
+		// comparison between structs (page 59)
+
+		type firstPerson struct {
+			name string
+			age  int
+		}
+		f := firstPerson{
+			name: "Bob",
+			age:  50,
+		}
+		var g struct {
+			name string
+			age  int
+		}
+		// compiles -- can use = and == between identical named and anonymous structs
+		g = f
+		fmt.Println(f == g)
+
+	}
 }
