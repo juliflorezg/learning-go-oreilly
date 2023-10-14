@@ -177,4 +177,116 @@ func main() {
 		fmt.Println()
 	}
 
+	// if we modify the value in a for-range loop, it doesn't modify the source
+	evenVals := []int{2, 4, 6, 8, 10, 12}
+	for _, v := range evenVals {
+		v *= 2
+	}
+	fmt.Println(evenVals) // [2 4 6 8 10 12]
+
+	// we can put a label on a for loop::
+outer:
+	for _, sample := range samples {
+		for i, r := range sample {
+			fmt.Println(i, r, string(r))
+			if r == 'l' {
+				// this continues the iteration on the 'outer' for loop, so it goes to the second word
+				continue outer
+			}
+		}
+	}
+
+	//> switch statement
+	words := []string{"a", "cow", "smile", "gopher",
+		"octopus", "anthropologist"}
+	for _, word := range words {
+		switch size := len(word); size {
+		case 1, 2, 3, 4:
+			fmt.Println(word, "is a short word!")
+		case 5:
+			wordLen := len(word)
+			fmt.Println(word, "is exactly the right length:", wordLen)
+		case 6, 7, 8, 9:
+		default:
+			fmt.Println(word, "is a long word!")
+		}
+	}
+	// outputs:
+	// a is a short word!
+	// cow is a short word!
+	// smile is exactly the right length: 5
+	// anthropologist is a long word!
+
+	// to make it output smt for cases 6, 7, 8, 9:::
+
+	for _, word := range words {
+		switch size := len(word); size {
+		case 1, 2, 3, 4:
+			fmt.Println(word, "is a short word!")
+		case 5:
+			wordLen := len(word)
+			fmt.Println(word, "is exactly the right length:", wordLen)
+		case 6, 7, 8, 9:
+			wordLen := len(word)
+			fmt.Println(word, "has length:", wordLen)
+		default:
+			fmt.Println(word, "is a long word!")
+		}
+	}
+
+	//* break in switch
+	// used to get out a case, not necessary
+	// another use is to break the current loop (we need to label the loop in order for this to work)
+
+	//?this doesn't exit the loop properly:::
+	for i := 0; i < 10; i++ {
+		switch {
+		case i%2 == 0:
+			fmt.Println(i, "is even")
+		case i%3 == 0:
+			fmt.Println(i, "is divisible by three but not 2")
+		case i%7 == 0:
+			fmt.Println(i, "exit the loop!!")
+			break
+		default:
+			fmt.Println(i, "boring!!!")
+		}
+	}
+
+	//0 is even
+	// 1 boring!!!
+	// 2 is even
+	// 3 is divisible by three but not 2
+	// 4 is even
+	// 5 boring!!!
+	// 6 is even
+	// 7 exit the loop!!
+	// 8 is even
+	// 9 is divisible by three but not 2
+
+	//? this, on the other hand, exits the loop as intended
+loop:
+	for i := 0; i < 10; i++ {
+		switch {
+		case i%2 == 0:
+			fmt.Println(i, "is even")
+		case i%3 == 0:
+			fmt.Println(i, "is divisible by three but not 2")
+		case i%7 == 0:
+			fmt.Println(i, "exit the loop!!")
+			break loop
+		default:
+			fmt.Println(i, "boring!!!")
+		}
+	}
+
+	// 	0 is even
+	// 1 boring!!!
+	// 2 is even
+	// 3 is divisible by three but not 2
+	// 4 is even
+	// 5 boring!!!
+	// 6 is even
+	// 7 exit the loop!!
+
 }
