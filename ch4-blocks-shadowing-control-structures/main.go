@@ -27,8 +27,8 @@ func main() {
 
 	//!! shadowing the universe variables
 	fmt.Println(true) // true
-	true := "lol"
-	fmt.Println(true) // lol
+	// true := "lol"
+	// fmt.Println(true) // lol
 
 	//> if statement
 
@@ -132,4 +132,49 @@ func main() {
 		}
 		fmt.Println(i)
 	}
+
+	//* 4. for-range statement
+
+	// used for strings, slices, arrays and maps (also with channels)
+
+	evenValues := []int{2, 4, 6, 8, 10, 12}
+
+	for i, v := range evenValues {
+		fmt.Println(i, v)
+	}
+	// for range without the index
+	for _, v := range evenValues {
+		fmt.Println(v)
+	}
+	//* if we want just the keys or indexes
+	uniqueNames := map[string]bool{"John": true, "Miles": true, "Cerberus": true}
+	for name := range uniqueNames {
+		fmt.Println(name)
+	}
+
+	// for-range with maps
+
+	map1 := map[string]int{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+	}
+
+	//when we run this code, we don't always get the same result, the order differs, this is for security reasons (check page 74 for explanation)
+	for i := 0; i < 3; i++ {
+		fmt.Println("loop:::", i)
+		for k, v := range map1 {
+			fmt.Println(k, v)
+		}
+	}
+
+	// for-range for strings
+	samples := []string{"hello", "apple_π!"}
+	for _, sample := range samples {
+		for i, r := range sample {
+			fmt.Println(i, r, string(r))
+		}
+		fmt.Println()
+	}
+
 }
